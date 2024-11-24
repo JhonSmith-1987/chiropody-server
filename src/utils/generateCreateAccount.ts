@@ -7,7 +7,7 @@ export function generateCreateAccount(user:IRequestCreateUser): AccountCreationA
         name: user.name_account,
         address: user.address_account,
         start_date: getCurrentTimestampToSeconds(),
-        status: 'active',
+        status: 'inactive',
         phone: user.phone_account,
     }
 }

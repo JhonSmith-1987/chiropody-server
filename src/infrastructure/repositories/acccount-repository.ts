@@ -24,4 +24,12 @@ export class AccountRepository implements IAccountRepository {
             throw error;
         }
     }
+
+    async accountById(id: string): Promise<AccountEntity | null> {
+        try {
+            return await AccountEntity.findByPk(id);
+        } catch (error) {
+            throw error;
+        }
+    }
 }

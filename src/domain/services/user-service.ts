@@ -9,6 +9,13 @@ import {IResponseServerDefault} from "../interfaces/common/i-response-server-def
 import {IAccountRepository} from "../interfaces/repositories/i-account-repository";
 import {generateCreateAccount} from "../../utils/generateCreateAccount";
 import {generateCreateUser} from "../../utils/generateCreateUser";
+import {ILogin} from "../interfaces/models/user/i-login";
+import {IResponseLogin} from "../interfaces/models/user/i-response-login";
+import {IUserDataToken} from "../interfaces/models/user/i-user-data-token";
+import {generateUserResponse} from "../../utils/generateUserResponse";
+import {generateAccountResponse} from "../../utils/generateAccountResponse";
+import {generateTokenAuth} from "../../infrastructure/config/jsonwebtoken";
+import {comparePassword} from "../../infrastructure/config/BcryptPassword";
 
 export class UserService implements IUserService {
 
@@ -80,6 +87,59 @@ export class UserService implements IUserService {
             return {
                 status: 200,
                 message: 'Usuario y cuenta creados exitosamente',
+            }
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    async login(login: ILogin): Promise<IResponseLogin<string | null>> {
+        try {
+            const exist_user = await this.userRepository.userByEmail(login.email);
+            if (!exist_user) {
+                return {
+                    status: 404,
+                    message: 'No existe usuario',
+                    token: null,
+                    user_roll: null,
+                }
+            }
+            const exist_Account = await this.accountRepository.accountById(exist_user.dataValues.account_id);
+            if (!exist_Account) {
+                return {
+                    status: 404,
+                    message: 'Usuario no tiene cuenta',
+                    token: null,
+                    user_roll: null,
+                }
+            }
+            if (exist_Account && exist_Account.dataValues.status === 'inactive') {
+                return {
+                    status: 401,
+                    message: 'Cuenta inactiva',
+                    token: null,
+                    user_roll: null,
+                }
+            }
+            const verify_password = await comparePassword(login.password, exist_user.dataValues.password);
+            if (!verify_password) {
+                return {
+                    status: 401,
+                    message: 'Contraseña incorrecta',
+                    token: null,
+                    user_roll: null,
+                }
+            }
+            const token_data: IUserDataToken = {
+                user: generateUserResponse(exist_user),
+                account: generateAccountResponse(exist_Account)
+            }
+            const token = generateTokenAuth(token_data);
+            return {
+                status: 200,
+                message: `Datos correctos, bienvenido ${exist_user.dataValues.name}`,
+                token: token,
+                user_roll: exist_user.dataValues.roll,
             }
         } catch (error) {
             throw error;

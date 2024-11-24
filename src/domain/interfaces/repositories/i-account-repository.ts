@@ -3,4 +3,5 @@ import AccountEntity, {AccountCreationAttributes} from "../../entities/account-e
 export interface IAccountRepository {
     create(account:AccountCreationAttributes): Promise<AccountEntity>;
     accountByName(name:string): Promise<AccountEntity|null>;
+    accountById(id:string): Promise<AccountEntity|null>;
 }

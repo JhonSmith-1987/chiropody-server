@@ -10,7 +10,7 @@ export async function generateCreateUser(user:IRequestCreateUser, account_id:str
         start_date: getCurrentTimestampToSeconds(),
         account_id: account_id,
         phone: user.phone_user,
-        roll: 'super_admin',
+        roll: 'admin',
         email: user.email_user,
         password: passHash,
     }
