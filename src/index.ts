@@ -11,6 +11,7 @@ import './domain/entities/asociation-entities';
 
 import {UserRepository} from "./infrastructure/repositories/user-repository";
 import {setupMiddlewareUserPublic} from "./presentation/setup-middleware/setup-middleware-user-public";
+import {AccountRepository} from "./infrastructure/repositories/acccount-repository";
 
 export const app = express();
 dotenv.config();
@@ -21,8 +22,9 @@ app.use(cors({origin: '*'}));
 const port = process.env.PORT || 4000;
 
 const userDataStore = new UserRepository();
+const accountDataStore = new AccountRepository();
 
-const userPublicMiddleware = setupMiddlewareUserPublic(userDataStore);
+const userPublicMiddleware = setupMiddlewareUserPublic(userDataStore, accountDataStore);
 
 
 // routes
@@ -31,7 +33,7 @@ app.use("/api/public/user", userPublicMiddleware);
 
 async function main() {
     try {
-        await sequelize.sync({force: false});
+        await sequelize.sync({force: true});
         app.listen(port, () => {
             console.log('port ==> ', port);
         });

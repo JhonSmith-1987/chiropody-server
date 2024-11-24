@@ -2,9 +2,11 @@ import {IGetAllUsersUseCase} from "../../domain/interfaces/use-case/user/i-get-a
 import express from "express";
 import { Request, Response } from 'express';
 import {IPaginateService} from "../../domain/interfaces/common/i-paginate-service";
+import {IRegisterUsersUseCase} from "../../domain/interfaces/use-case/user/i-register-users-use-case";
 
 export default function UserRouterPublic(
     getAllUsersUseCase: IGetAllUsersUseCase,
+    registerUsersUseCase: IRegisterUsersUseCase
 ) {
     const router = express.Router();
 
@@ -12,6 +14,19 @@ export default function UserRouterPublic(
         try {
             const query = req.query as unknown as IPaginateService;
             const response = await getAllUsersUseCase.execute(query);
+            res.status(200).send(response);
+        } catch (error) {
+            res.status(500).send({
+                status: 500,
+                message: 'Internal server error',
+                data: error
+            });
+        }
+    });
+
+    router.post("/register", async (req: Request, res: Response) => {
+        try {
+            const response = await registerUsersUseCase.execute(req.body);
             res.status(200).send(response);
         } catch (error) {
             res.status(500).send({

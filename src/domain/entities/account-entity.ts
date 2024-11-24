@@ -9,7 +9,6 @@ export interface AccountAttributes {
     phone: string;
     status: string;
     start_date: number;
-    roll: string;
 }
 
 export interface AccountCreationAttributes extends Optional<AccountAttributes, 'id'> {}
@@ -20,7 +19,6 @@ class AccountEntity extends Model<AccountAttributes, AccountCreationAttributes> 
     public address!: string;
     public phone!: string;
     public status!: string;
-    public roll!: string;
     public start_date!: number;
 }
 
@@ -48,11 +46,6 @@ AccountEntity.init({
     },
     status: {
         field: 'status',
-        type: DataTypes.STRING,
-        allowNull: false,
-    },
-    roll: {
-        field: 'roll',
         type: DataTypes.STRING,
         allowNull: false,
     },

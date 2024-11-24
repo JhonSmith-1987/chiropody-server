@@ -2,9 +2,12 @@ import {UserRepository} from "../../infrastructure/repositories/user-repository"
 import UserRouterPublic from "../routes/user-router-public";
 import {GetAllUsersUseCase} from "../../domain/use-cases/user/get-all-users-use-case";
 import {UserService} from "../../domain/services/user-service";
+import {AccountRepository} from "../../infrastructure/repositories/acccount-repository";
+import {RegisterUserUseCase} from "../../domain/use-cases/user/register-user-use-case";
 
-export function setupMiddlewareUserPublic(userDataStore: UserRepository) {
+export function setupMiddlewareUserPublic(userDataStore: UserRepository, accountDataStore: AccountRepository) {
     return UserRouterPublic(
-        new GetAllUsersUseCase(new UserService(userDataStore)),
+        new GetAllUsersUseCase(new UserService(userDataStore, accountDataStore)),
+        new RegisterUserUseCase(new UserService(userDataStore, accountDataStore)),
     );
 }

@@ -24,4 +24,16 @@ export class UserRepository implements IUserRepository {
             throw error;
         }
     }
+
+    async userByEmail(email: string): Promise<UserEntity | null> {
+        try {
+            return await UserEntity.findOne({
+                where: {
+                    email: email,
+                }
+            });
+        } catch (error) {
+            throw error;
+        }
+    }
 }
