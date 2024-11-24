@@ -32,6 +32,10 @@ export class UserService implements IUserService {
                     id: r.dataValues.id,
                     email: r.dataValues.email,
                     name: r.dataValues.name,
+                    account_id: r.dataValues.account_id,
+                    roll: r.dataValues.roll,
+                    phone: r.dataValues.phone,
+                    start_date: r.dataValues.start_date
                 });
             }
             return {

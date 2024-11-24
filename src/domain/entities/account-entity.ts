@@ -2,31 +2,29 @@ import { DataTypes, Model, Optional } from "sequelize";
 import {sequelize} from '../../infrastructure/config/sequelizeConfig';
 
 
-export interface UserAttributes {
+export interface AccountAttributes {
     id: string;
     name: string;
+    address: string;
     phone: string;
-    email: string;
-    password: string;
-    roll: string;
+    status: string;
     start_date: number;
-    account_id: string;
+    roll: string;
 }
 
-export interface UserCreationAttributes extends Optional<UserAttributes, 'id'> {}
+export interface AccountCreationAttributes extends Optional<AccountAttributes, 'id'> {}
 
-class UserEntity extends Model<UserAttributes, UserCreationAttributes> implements UserAttributes {
+class AccountEntity extends Model<AccountAttributes, AccountCreationAttributes> implements AccountAttributes {
     public id!: string;
     public name!: string;
+    public address!: string;
     public phone!: string;
-    public email!: string;
-    public password!: string;
+    public status!: string;
     public roll!: string;
     public start_date!: number;
-    public account_id!: string;
 }
 
-UserEntity.init({
+AccountEntity.init({
     id: {
         allowNull: false,
         primaryKey: true,
@@ -38,19 +36,19 @@ UserEntity.init({
         type: DataTypes.STRING,
         allowNull: false,
     },
+    address: {
+        field: 'address',
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
     phone: {
         field: 'phone',
         type: DataTypes.STRING,
         allowNull: false,
     },
-    email: {
-        field: 'email',
+    status: {
+        field: 'status',
         type: DataTypes.STRING,
-        allowNull: false,
-    },
-    password: {
-        field: 'password',
-        type: DataTypes.STRING(150),
         allowNull: false,
     },
     roll: {
@@ -63,14 +61,9 @@ UserEntity.init({
         type: DataTypes.INTEGER,
         allowNull: false,
     },
-    account_id: {
-        field: 'account_id',
-        type: DataTypes.UUID,
-        allowNull: true,
-    },
 }, {
     sequelize,
-    tableName: 'users'
+    tableName: 'accounts'
 });
 
-export default UserEntity;
+export default AccountEntity;

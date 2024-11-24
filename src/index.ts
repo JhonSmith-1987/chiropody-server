@@ -5,6 +5,10 @@ import {sequelize} from './infrastructure/config/sequelizeConfig'
 
 // entities import
 import './domain/entities/user-entity';
+import './domain/entities/account-entity';
+import './domain/entities/asociation-entities';
+
+
 import {UserRepository} from "./infrastructure/repositories/user-repository";
 import {setupMiddlewareUserPublic} from "./presentation/setup-middleware/setup-middleware-user-public";
 
@@ -27,7 +31,7 @@ app.use("/api/public/user", userPublicMiddleware);
 
 async function main() {
     try {
-        await sequelize.sync({force: false});
+        await sequelize.sync({force: true});
         app.listen(port, () => {
             console.log('port ==> ', port);
         });
