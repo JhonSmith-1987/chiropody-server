@@ -33,7 +33,7 @@ app.use("/api/public/user", userPublicMiddleware);
 
 async function main() {
     try {
-        await sequelize.sync({force: true});
+        await sequelize.sync({force: false});
         app.listen(port, () => {
             console.log('port ==> ', port);
         });
