@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
-import {IResponseUserRegister} from "../../domain/models/user-model";
+import {IResponseUserRegister} from "../../domain/interfaces/models/user-model";
 
 dotenv.config();
 

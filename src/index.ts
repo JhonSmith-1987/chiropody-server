@@ -4,7 +4,9 @@ import dotenv from 'dotenv';
 import {sequelize} from './infrastructure/config/sequelizeConfig'
 
 // entities import
-
+import './domain/entities/user-entity';
+import {UserRepository} from "./infrastructure/repositories/user-repository";
+import {setupMiddlewareUserPublic} from "./presentation/setup-middleware/setup-middleware-user-public";
 
 export const app = express();
 dotenv.config();
@@ -14,10 +16,13 @@ app.use(cors({origin: '*'}));
 
 const port = process.env.PORT || 4000;
 
+const userDataStore = new UserRepository();
 
+const userPublicMiddleware = setupMiddlewareUserPublic(userDataStore);
 
 
 // routes
+app.use("/api/public/user", userPublicMiddleware);
 
 
 async function main() {

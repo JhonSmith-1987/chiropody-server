@@ -1,6 +1,6 @@
 import {UserCreationAttributes} from "../domain/entities/user-entity";
 import {getCurrentTimeInSeconds} from "./getCurrentTimeInSeconds";
-import {IRequestUserRegister} from "../domain/models/user-model";
+import {IRequestUserRegister} from "../domain/interfaces/models/user-model";
 import {hashPassword} from "../infrastructure/config/BcryptPassword";
 
 export async function generateUserRegisterData(user: IRequestUserRegister):Promise<UserCreationAttributes> {
