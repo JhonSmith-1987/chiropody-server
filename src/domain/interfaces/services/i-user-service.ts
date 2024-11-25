@@ -5,9 +5,11 @@ import {IRequestCreateUser} from "../models/user/i-request-create-user";
 import {IResponseServerDefault} from "../common/i-response-server-default";
 import {ILogin} from "../models/user/i-login";
 import {IResponseLogin} from "../models/user/i-response-login";
+import {IUserDataToken} from "../models/user/i-user-data-token";
 
 export interface IUserService {
     allUsers(paginate:IPaginateService): Promise<IResponseAllUsers<IAllUsers[]>>;
     create(user:IRequestCreateUser): Promise<IResponseServerDefault>;
     login(login:ILogin): Promise<IResponseLogin<string|null>>;
+    validateUserAdminActive(user:IUserDataToken): Promise<IResponseServerDefault>;
 }

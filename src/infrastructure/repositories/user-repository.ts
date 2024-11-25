@@ -36,4 +36,12 @@ export class UserRepository implements IUserRepository {
             throw error;
         }
     }
+
+    async userById(id:string): Promise<UserEntity|null> {
+        try {
+            return await UserEntity.findByPk(id);
+        } catch (error) {
+            throw error;
+        }
+    }
 }

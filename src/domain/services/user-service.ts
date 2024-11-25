@@ -145,4 +145,41 @@ export class UserService implements IUserService {
             throw error;
         }
     }
+
+    async validateUserAdminActive(user:IUserDataToken): Promise<IResponseServerDefault> {
+        try {
+            const exist_user = await this.userRepository.userById(user.user.id);
+            if (!exist_user) {
+                return {
+                    status: 404,
+                    message: 'No existe usuario',
+                }
+            }
+            if (exist_user && exist_user.roll !== 'super_admin') {
+                return {
+                    status: 401,
+                    message: 'Usuario no tiene permisos para esta peticion',
+                }
+            }
+            const exist_Account = await this.accountRepository.accountById(user.account.id);
+            if (!exist_Account) {
+                return {
+                    status: 404,
+                    message: 'No existe cuenta',
+                }
+            }
+            if (exist_Account && exist_Account.dataValues.status === 'inactive') {
+                return {
+                    status: 401,
+                    message: 'Cuenta inactiva',
+                }
+            }
+            return {
+                status: 200,
+                message: 'Usuario con permisos activos'
+            }
+        } catch (error) {
+            throw error;
+        }
+    }
 }

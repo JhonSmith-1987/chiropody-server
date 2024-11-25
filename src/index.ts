@@ -12,6 +12,7 @@ import './domain/entities/asociation-entities';
 import {UserRepository} from "./infrastructure/repositories/user-repository";
 import {setupMiddlewareUserPublic} from "./presentation/setup-middleware/setup-middleware-user-public";
 import {AccountRepository} from "./infrastructure/repositories/acccount-repository";
+import {setupMiddlewareAccountPrivate} from "./presentation/setup-middleware/setup-middleware-account-private";
 
 export const app = express();
 dotenv.config();
@@ -27,8 +28,14 @@ const accountDataStore = new AccountRepository();
 const userPublicMiddleware = setupMiddlewareUserPublic(userDataStore, accountDataStore);
 
 
-// routes
+const accountPrivateMiddleware = setupMiddlewareAccountPrivate(userDataStore, accountDataStore);
+
+
+// routes public
 app.use("/api/public/user", userPublicMiddleware);
+
+// routes private
+app.use("/api/private/account", accountPrivateMiddleware);
 
 
 async function main() {
