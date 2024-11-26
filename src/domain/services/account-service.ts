@@ -5,6 +5,9 @@ import {IPaginateSearchService} from "../interfaces/common/i-paginate-search-ser
 import {IResponseAccountData} from "../interfaces/models/account/i-response-account-data";
 import {IResponseAllSearchAccounts} from "../interfaces/models/account/i-response-all-search-accounts";
 import {formatDateInSpanish} from "../../utils/generate-date-functions";
+import {IUpdateAccountService} from "../interfaces/models/account/i-update-account-service";
+import {IResponseServerWithData} from "../interfaces/common/i-response-server-with-data";
+import {generateAccountResponse} from "../../utils/generate-account-response";
 
 export class AccountService implements IAccountService {
 
@@ -68,4 +71,25 @@ export class AccountService implements IAccountService {
         }
     }
 
+    async updateAccount(data: IUpdateAccountService, id: string): Promise<IResponseServerWithData<IResponseAccountData | null>> {
+        try {
+            const account = await this.accountRepository.accountById(id);
+            if (!account) {
+                return {
+                    status: 404,
+                    message: 'No existe cuenta',
+                    data: null
+                }
+            }
+            const response = await account.update(data);
+            const accountUpdated = generateAccountResponse(response);
+            return {
+                status: 200,
+                message: 'Cuenta actualizada',
+                data: accountUpdated
+            }
+        } catch (error) {
+            throw error;
+        }
+    }
 }

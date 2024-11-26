@@ -25,9 +25,12 @@ const port = process.env.PORT || 4000;
 const userDataStore = new UserRepository();
 const accountDataStore = new AccountRepository();
 
+
+// middleware public
 const userPublicMiddleware = setupMiddlewareUserPublic(userDataStore, accountDataStore);
 
 
+// middleware private
 const accountPrivateMiddleware = setupMiddlewareAccountPrivate(userDataStore, accountDataStore);
 
 
