@@ -6,6 +6,13 @@ import {sequelize} from './infrastructure/config/sequelizeConfig'
 // entities import
 import './domain/entities/user-entity';
 import './domain/entities/account-entity';
+import './domain/entities/client-entity';
+import './domain/entities/provider-entity';
+import './domain/entities/creditor-entity';
+import './domain/entities/transaction-entity';
+import './domain/entities/amoun-total-entity';
+import './domain/entities/transaction-creditor-entity';
+import './domain/entities/amoun-total-creditor-entity';
 import './domain/entities/asociation-entities';
 
 
@@ -13,6 +20,10 @@ import {UserRepository} from "./infrastructure/repositories/user-repository";
 import {setupMiddlewareUserPublic} from "./presentation/setup-middleware/setup-middleware-user-public";
 import {AccountRepository} from "./infrastructure/repositories/acccount-repository";
 import {setupMiddlewareAccountPrivate} from "./presentation/setup-middleware/setup-middleware-account-private";
+import {setupMiddlewareAuthPrivate} from "./presentation/setup-middleware/setup-middleware-auth-private";
+import {AmountTotalRepository} from "./infrastructure/repositories/amount-total-repository";
+import {setupMiddlewareTransactionPrivate} from "./presentation/setup-middleware/setup-middleware-transaction-private";
+import {TransactionRepository} from "./infrastructure/repositories/transaction-repository";
 
 export const app = express();
 dotenv.config();
@@ -24,21 +35,27 @@ const port = process.env.PORT || 4000;
 
 const userDataStore = new UserRepository();
 const accountDataStore = new AccountRepository();
+const amountTotalDataStore = new AmountTotalRepository();
+const transactionDataStore = new TransactionRepository();
 
 
 // middleware public
-const userPublicMiddleware = setupMiddlewareUserPublic(userDataStore, accountDataStore);
+const userPublicMiddleware = setupMiddlewareUserPublic(userDataStore, accountDataStore, amountTotalDataStore);
 
 
 // middleware private
-const accountPrivateMiddleware = setupMiddlewareAccountPrivate(userDataStore, accountDataStore);
+const authPrivateMiddleware = setupMiddlewareAuthPrivate(userDataStore, accountDataStore, amountTotalDataStore);
+const accountPrivateMiddleware = setupMiddlewareAccountPrivate(userDataStore, accountDataStore, amountTotalDataStore);
+const transactionPrivateMiddleware = setupMiddlewareTransactionPrivate(userDataStore, accountDataStore, amountTotalDataStore, transactionDataStore);
 
 
 // routes public
 app.use("/api/public/user", userPublicMiddleware);
 
 // routes private
+app.use("/api/private/auth", authPrivateMiddleware);
 app.use("/api/private/account", accountPrivateMiddleware);
+app.use("/api/private/transaction", transactionPrivateMiddleware);
 
 
 async function main() {

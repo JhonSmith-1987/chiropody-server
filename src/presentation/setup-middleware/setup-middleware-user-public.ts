@@ -5,11 +5,12 @@ import {UserService} from "../../domain/services/user-service";
 import {AccountRepository} from "../../infrastructure/repositories/acccount-repository";
 import {RegisterUserUseCase} from "../../domain/use-cases/user/register-user-use-case";
 import {LoginUserUseCase} from "../../domain/use-cases/user/login-user-use-case";
+import {AmountTotalRepository} from "../../infrastructure/repositories/amount-total-repository";
 
-export function setupMiddlewareUserPublic(userDataStore: UserRepository, accountDataStore: AccountRepository) {
+export function setupMiddlewareUserPublic(userDataStore: UserRepository, accountDataStore: AccountRepository, amountTotalDataStore: AmountTotalRepository) {
     return UserRouterPublic(
-        new GetAllUsersUseCase(new UserService(userDataStore, accountDataStore)),
-        new RegisterUserUseCase(new UserService(userDataStore, accountDataStore)),
-        new LoginUserUseCase(new UserService(userDataStore, accountDataStore)),
+        new GetAllUsersUseCase(new UserService(userDataStore, accountDataStore, amountTotalDataStore)),
+        new RegisterUserUseCase(new UserService(userDataStore, accountDataStore, amountTotalDataStore)),
+        new LoginUserUseCase(new UserService(userDataStore, accountDataStore, amountTotalDataStore)),
     );
 }

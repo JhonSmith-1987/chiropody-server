@@ -16,18 +16,23 @@ import {generateUserResponse} from "../../utils/generateUserResponse";
 import {generateAccountResponse} from "../../utils/generateAccountResponse";
 import {generateTokenAuth} from "../../infrastructure/config/jsonwebtoken";
 import {comparePassword} from "../../infrastructure/config/BcryptPassword";
+import {IAmountTotalRepository} from "../interfaces/repositories/i-amount-total-repository";
+import {generateCreateAmountTotal} from "../../utils/generateCreateAmountTotal";
 
 export class UserService implements IUserService {
 
     private userRepository: IUserRepository;
     private accountRepository: IAccountRepository;
+    private amountTotalRepository: IAmountTotalRepository;
 
     constructor(
         userRepository: IUserRepository,
         accountRepository: IAccountRepository,
+        amountTotalRepository: IAmountTotalRepository,
     ) {
         this.userRepository = userRepository;
         this.accountRepository = accountRepository;
+        this.amountTotalRepository = amountTotalRepository;
     }
 
     async allUsers(paginate: IPaginateService): Promise<IResponseAllUsers<IAllUsers[]>> {
@@ -83,6 +88,8 @@ export class UserService implements IUserService {
             const new_account = await this.accountRepository.create(account_data);
             const user_data = await generateCreateUser(user, new_account.dataValues.id);
             const new_user = await this.userRepository.create(user_data);
+            const amount_total_data = generateCreateAmountTotal(new_user.dataValues.id, new_account.dataValues.id);
+            await this.amountTotalRepository.create(amount_total_data);
             console.log(new_user);
             return {
                 status: 200,

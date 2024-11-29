@@ -26,7 +26,7 @@ class Middleware {
             if (!decoded || (typeof decoded === 'string')) {
                 res.status(200).json({
                     status: 403,
-                    message: 'No tiene permisos'
+                    message: 'Su sesión ha expirado',
                 });
                 return;
             }
