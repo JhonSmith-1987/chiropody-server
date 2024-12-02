@@ -1,6 +1,6 @@
 version: '1'
 services:
-  pary_back:
+  jmjrr_back:
     container_name: 'jmjrr_back'
     build:
       context: .
