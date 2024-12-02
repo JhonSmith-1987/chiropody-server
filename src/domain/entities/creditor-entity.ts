@@ -3,12 +3,7 @@ import {sequelize} from '../../infrastructure/config/sequelizeConfig';
 import {ClientAttributes} from "./client-entity";
 
 
-export interface CreditorAttributes extends ClientAttributes {
-    address: string;
-    identification: string;
-    start_date: number;
-    user_id: string;
-}
+export interface CreditorAttributes extends ClientAttributes {}
 
 export interface CreditorCreationAttributes extends Optional<CreditorAttributes, 'id'> {}
 

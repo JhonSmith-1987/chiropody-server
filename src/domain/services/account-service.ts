@@ -3,7 +3,7 @@ import {IAccountRepository} from "../interfaces/repositories/i-account-repositor
 import {IAccountService} from "../interfaces/services/i-account-service";
 import {IPaginateSearchService} from "../interfaces/common/i-paginate-search-service";
 import {IResponseAccountData} from "../interfaces/models/account/i-response-account-data";
-import {IResponseAllSearchAccounts} from "../interfaces/models/account/i-response-all-search-accounts";
+import {IResponseAllPaginateSearch} from "../interfaces/models/account/i-response-all-paginate-search";
 import {formatDateInSpanish} from "../../utils/generate-date-functions";
 import {IUpdateAccountService} from "../interfaces/models/account/i-update-account-service";
 import {IResponseServerWithData} from "../interfaces/common/i-response-server-with-data";
@@ -19,7 +19,7 @@ export class AccountService implements IAccountService {
         this.accountRepository = accountRepository;
     }
 
-    async allAccountPaginateAndSearch(paginate:IPaginateSearchService): Promise<IResponseAllSearchAccounts<IResponseAccountData[]>> {
+    async allAccountPaginateAndSearch(paginate:IPaginateSearchService): Promise<IResponseAllPaginateSearch<IResponseAccountData[]>> {
         try {
             const paginate_repository = getPaginateRepository({
                 page: paginate.page,

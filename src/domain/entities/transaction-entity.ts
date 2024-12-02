@@ -7,6 +7,7 @@ export interface TransactionAttributes {
     date: number;
     amount: number;
     type: string;
+    status: string;
     description: string;
     transaction_data: string;
     transaction_id: string;
@@ -21,6 +22,7 @@ class TransactionEntity extends Model<TransactionAttributes, TransactionCreation
     public date!: number;
     public amount!: number;
     public type!: string;
+    public status!: string;
     public description!: string;
     public transaction_data!: string;
     public transaction_id!: string;
@@ -47,6 +49,11 @@ TransactionEntity.init({
     },
     type: {
         field: 'type',
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
+    status: {
+        field: 'status',
         type: DataTypes.STRING,
         allowNull: false,
     },

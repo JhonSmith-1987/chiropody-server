@@ -14,6 +14,7 @@ class TransactionCreditorEntity extends Model<TransactionCreditorAttributes, Tra
     public date!: number;
     public amount!: number;
     public type!: string;
+    public status!: string;
     public description!: string;
     public user_id!: string;
     public account_id!: string;
@@ -39,6 +40,11 @@ TransactionCreditorEntity.init({
     },
     type: {
         field: 'type',
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
+    status: {
+        field: 'status',
         type: DataTypes.STRING,
         allowNull: false,
     },

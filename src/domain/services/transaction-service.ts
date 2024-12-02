@@ -28,7 +28,7 @@ export class TransactionService implements ITransactionService {
                 const amount_total = await this.amountTotalRepository.getByUserAccountId(user_id, account_id);
                 if (!amount_total) {
                     return {
-                        status: 204,
+                        status: 404,
                         message: 'Cuenta no tiene amount total',
                         data: null,
                     }

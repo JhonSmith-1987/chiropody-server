@@ -10,6 +10,7 @@ export function generateCreateTransaction(data: ICreateTransactionService, user_
         transaction_data: data.transaction_data,
         account_id: account_id,
         type: data.type,
+        status: data.status,
         user_id: user_id,
         description: data.description,
     }
