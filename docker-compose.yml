@@ -1,0 +1,21 @@
+version: '1'
+services:
+  pary_back:
+    container_name: 'jmjrr_back'
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    volumes:
+      - '/chiropody-server/node_modules'
+    ports:
+      - "4000:4000"
+    environment:
+      PORT: 4000
+      DB_HOST: 159.223.194.240
+      DB_USER: postgres
+      DB_PASSWORD: BTAIjidGeO4Z1HA
+      DB_DATABASE: jmjrr-server
+      DB_PORT: 5432
+      JWT_SECRET: jmjrrkey
+      JWT_EXPIRES_IN: 3600s
